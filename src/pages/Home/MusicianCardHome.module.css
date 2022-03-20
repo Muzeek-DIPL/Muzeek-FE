@@ -1,0 +1,20 @@
+.container {
+	height: 300px;
+	width: 100%;
+	cursor: pointer;
+}
+
+.overlay {
+	background: linear-gradient(
+		180deg,
+		rgba(0, 0, 0, 0.7) 0%,
+		rgba(91, 91, 91, 0) 38.02%
+	);
+}
+
+@media (min-width: 768px) {
+	.container {
+		height: 390px;
+		width: 22%;
+	}
+}
