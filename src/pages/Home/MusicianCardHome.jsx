@@ -6,7 +6,7 @@ export default function MusicianCard(props) {
 	return (
 		<Link
 			className={`${styles.container} mb-3 mb-md-0 d-inline-block border-0 card rounded`}
-			to={`musician/${id}`}
+			to={`musician`}
 		>
 			<div
 				className={`${styles.overlay} position-absolute rounded p-4 w-100 h-100`}

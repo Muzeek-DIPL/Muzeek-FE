@@ -1,0 +1,16 @@
+.button {
+	background-color: #f2af02;
+	border: 1px solid #f2af02;
+	color: white;
+	height: 100%;
+	width: fit-content;
+}
+
+.container {
+	border: 1px solid #cccccc;
+}
+
+.input {
+	outline: none;
+	resize: none;
+}
