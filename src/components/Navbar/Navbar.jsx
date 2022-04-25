@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import LoginModal from '../LoginModal/LoginModal';
-import JoinModal from '../JoinModal/JoinModal';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { postLogout } from '../../network/post';
+import { isLoggedIn } from '../../utils/helpers';
+import JoinModal from '../JoinModal/JoinModal';
+import LoginModal from '../LoginModal/LoginModal';
 
 export default function Navbar() {
+	const user = useSelector((state) => state.user);
+
 	const [openLogin, setOpenLogin] = useState(false);
 	const [openJoin, setOpenJoin] = useState(false);
 
@@ -41,21 +46,43 @@ export default function Navbar() {
 							<Link className="nav-link mx-2" to="/explore" replace>
 								Explore
 							</Link>
-							<span
-								className="nav-link mx-2"
-								style={{ cursor: 'pointer' }}
-								onClick={() => setOpenLogin(true)}
-							>
-								Sign In
-							</span>
-							<Button
-								variant="outline-primary"
-								className="rounded mx-2 px-4"
-								style={{ width: 'fit-content' }}
-								onClick={() => setOpenJoin(true)}
-							>
-								Join
-							</Button>
+							{isLoggedIn() ? (
+								<>
+									<span
+										className="nav-link mx-2"
+										style={{ cursor: 'pointer' }}
+										onClick={postLogout}
+									>
+										Logout
+									</span>
+									<Link className={`nav-link mx-2`} to={`/profile/${user.id}`}>
+										<img
+											className="rounded-circle"
+											src={user.img_link}
+											alt="user"
+											style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+										/>
+									</Link>
+								</>
+							) : (
+								<>
+									<span
+										className="nav-link mx-2"
+										style={{ cursor: 'pointer' }}
+										onClick={() => setOpenLogin(true)}
+									>
+										Sign In
+									</span>
+									<Button
+										variant="outline-primary"
+										className="rounded mx-2 px-4"
+										style={{ width: 'fit-content' }}
+										onClick={() => setOpenJoin(true)}
+									>
+										Join
+									</Button>
+								</>
+							)}
 						</div>
 					</div>
 				</div>

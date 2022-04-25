@@ -1,0 +1,23 @@
+.input {
+	border: 0;
+	width: 250px;
+}
+
+.input:focus {
+	outline: none;
+}
+
+.input::placeholder {
+	color: #8f8d8d;
+}
+
+.searchbar {
+	border: 1px solid #8f8d8d;
+	width: 100%;
+}
+
+@media (min-width: 768px) {
+	.searchbar {
+		width: fit-content;
+	}
+}
