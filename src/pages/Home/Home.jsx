@@ -1,13 +1,11 @@
-import Navbar from '../../components/Navbar/Navbar';
-import MusicianCardHome from './MusicianCardHome';
-import styles from './Home.module.css';
-import SearchInputHome from './SearchInputHome';
 import mockData from '../../mockMusician.json';
+import styles from './Home.module.css';
+import MusicianCardHome from './MusicianCardHome';
+import SearchInputHome from './SearchInputHome';
 
 export default function Home() {
 	return (
 		<div className="pb-3">
-			<Navbar />
 			<div className={styles.hero}>
 				<div className={`${styles.overlay} p-2 p-md-5`}>
 					<div className="container mt-4">

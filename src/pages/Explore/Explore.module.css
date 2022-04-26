@@ -1,0 +1,7 @@
+.button {
+	background-color: white;
+	border: 1px solid #f2af02;
+	color: #f2af02;
+	height: 100%;
+	width: fit-content;
+}

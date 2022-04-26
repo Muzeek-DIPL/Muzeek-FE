@@ -1,18 +1,12 @@
 import { Icon } from '@iconify/react';
+import { Formik } from 'formik';
 import { useState } from 'react';
-import { Button, FloatingLabel, Form, Modal } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, Modal, Spinner } from 'react-bootstrap';
+import { postLogin } from '../../network/post';
+import { validateForm } from '../../utils/helpers';
 
 export default function LoginModal(props) {
-	const [form, setForm] = useState({
-		username: '',
-		password: '',
-	});
-	const [errorMsg, setErrorMsg] = useState('');
-	const onChange = (e) => {
-		const name = e.target.name;
-		const value = e.target.value;
-		setForm({ ...form, [name]: value });
-	};
+	const [fetchError, setFetchError] = useState('');
 	return (
 		<Modal
 			{...props}
@@ -31,31 +25,78 @@ export default function LoginModal(props) {
 			</Modal.Header>
 			<Modal.Body>
 				<h2 className="fw-bolder text-center">Login to Muzeek</h2>
-				<Form className="px-4 px-md-5 py-3" onSubmit={() => {}}>
-					<FloatingLabel label="Username" className="mb-3">
-						<Form.Control
-							className="mb-4"
-							value={form.username}
-							name="username"
-							placeholder="Username"
-							onChange={onChange}
-							type="text"
-						/>
-					</FloatingLabel>
-					<FloatingLabel label="Password" className="mb-3">
-						<Form.Control
-							className="mb-4"
-							value={form.password}
-							name="Password"
-							placeholder="Password"
-							onChange={onChange}
-							type="password"
-						/>
-					</FloatingLabel>
-					<Button variant="primary" className="rounded p-2 w-100" type="submit">
-						Login
-					</Button>
-				</Form>
+				<Formik
+					initialValues={{ username: '', password: '' }}
+					validate={(values) => {
+						setFetchError('');
+						return validateForm(values);
+					}}
+					onSubmit={(values, { setSubmitting }) => {
+						postLogin(values, setSubmitting, setFetchError);
+					}}
+				>
+					{({
+						values,
+						errors,
+						touched,
+						handleChange,
+						handleBlur,
+						handleSubmit,
+						isSubmitting,
+					}) => (
+						<Form className="px-4 px-md-5 py-3" onSubmit={handleSubmit}>
+							<p className="text-danger text-center">{fetchError}</p>
+
+							<FloatingLabel label="Username" className="mb-3">
+								<Form.Control
+									value={values.username}
+									name="username"
+									placeholder="Username"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									isInvalid={!!errors.username}
+									type="text"
+								/>
+								<Form.Control.Feedback type="invalid">
+									{errors.username && touched.username && errors.username}
+								</Form.Control.Feedback>
+							</FloatingLabel>
+
+							<FloatingLabel label="Password" className="mb-3">
+								<Form.Control
+									value={values.password}
+									name="password"
+									placeholder="Password"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									type="password"
+									isInvalid={!!errors.password}
+								/>
+								<Form.Control.Feedback type="invalid">
+									{errors.password && touched.password && errors.password}
+								</Form.Control.Feedback>
+							</FloatingLabel>
+
+							<Button
+								variant="primary"
+								className="rounded p-2 w-100"
+								type="submit"
+								disabled={isSubmitting}
+							>
+								{isSubmitting ? (
+									<Spinner
+										variant="light"
+										animation="border"
+										size="sm"
+										aria-hidden="true"
+									/>
+								) : (
+									'Login'
+								)}
+							</Button>
+						</Form>
+					)}
+				</Formik>
 			</Modal.Body>
 			<Modal.Footer>
 				<p className="m-auto my-2">

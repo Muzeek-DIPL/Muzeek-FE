@@ -1,13 +1,11 @@
 import { Icon } from '@iconify/react';
-import Navbar from '../../components/Navbar/Navbar';
+import mockData from '../../mockMusician.json';
 import CommentList from './CommentList';
 import styles from './Detail.module.css';
-import mockData from '../../mockMusician.json';
 
 export default function Detail() {
 	return (
 		<>
-			<Navbar />
 			<div className="container d-flex flex-column flex-md-row justify-content-between py-4">
 				<div className="d-flex flex-column">
 					<div className="d-flex flex-column flex-md-row">
