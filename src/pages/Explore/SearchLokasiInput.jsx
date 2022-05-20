@@ -1,19 +1,24 @@
 import { Icon } from "@iconify/react";
-import styles from "./SearchLokasiInput.module.css";
+import { FormControl, InputGroup } from "react-bootstrap";
 
 export default function SearchLokasiInput(props) {
-	const onChange = (e) => {
-		props.onChange({ keyword: e.target.value });
-	};
-	return (
-		<div className={`bg-white ps-2 rounded ${styles.searchbar}`}>
-			<Icon icon="ant-design:search-outlined" color="#8f8d8d" />
-			<input
-				className={`${styles.input} p-2 rounded`}
-				placeholder="Nama / lokasi"
-				value={props.keyword}
-				onChange={onChange}
-			/>
-		</div>
-	);
+  const onChange = (e) => {
+    props.onChange({ keyword: e.target.value });
+  };
+  return (
+    <InputGroup style={{ width: "250px" }}>
+      <InputGroup.Text
+        className="rounded-start bg-white border-end-0"
+        style={{ zIndex: 10 }}
+      >
+        <Icon icon="bi:search" width="15" color="#8f8d8d" />
+      </InputGroup.Text>
+      <FormControl
+        placeholder="Cari lokasi / nama musisi"
+        value={props.keyword}
+        name="keyword"
+        onChange={onChange}
+      />
+    </InputGroup>
+  );
 }
