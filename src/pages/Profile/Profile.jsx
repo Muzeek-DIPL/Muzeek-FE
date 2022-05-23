@@ -1,7 +1,7 @@
 import imageCompression from "browser-image-compression";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 import { putUpdateUserProfile } from "../../network/put";
 import { app } from "../../thirdparties/firebase/firebase";
 import { validateForm } from "../../utils/helpers";
-// import { login } from "../../store/loginSlice";
 import styles from "./Profile.module.css";
 
 export default function Profile() {
@@ -17,13 +16,17 @@ export default function Profile() {
 
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [loadingUpload, setLoadingUpload] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
-  const onChangeImage = (e) => {
+  const compressionOption = {
+    maxWidthOrHeight: 528,
+    useWebWorker: true,
+  };
+
+  const onChangeImage = (e, setFieldValue) => {
     if (app) {
       const file = e.target.files[0];
       const storageRef = getStorage();
@@ -33,7 +36,8 @@ export default function Profile() {
         uploadBytes(fileRef, compressedFile).then(() => {
           getDownloadURL(fileRef)
             .then((url) => {
-              setForm({ ...form, img_link: url });
+              setFieldValue("img_link", url);
+              console.log("e", e);
             })
             .then(() => {
               setLoadingUpload(false);
@@ -91,6 +95,7 @@ export default function Profile() {
               }}
               validate={(values) => {
                 const exceptionFields = ["img_link", "instrument", "about"];
+                console.log(validateForm(values, exceptionFields));
                 return validateForm(values, exceptionFields);
               }}
               onSubmit={(values, { setSubmitting }) => {
@@ -111,6 +116,7 @@ export default function Profile() {
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
+                setFieldValue,
               }) => (
                 <Form
                   className="d-flex flex-column flex-md-row mt-5 justify-content-center"
@@ -145,7 +151,7 @@ export default function Profile() {
                       type="file"
                       id="img-input"
                       disabled={!isEditing || loadingUpload}
-                      onChange={onChangeImage}
+                      onChange={(e) => onChangeImage(e, setFieldValue)}
                     />
                   </label>
 
@@ -178,11 +184,11 @@ export default function Profile() {
                     <Form.Group className="fw-bolder fs-5 mb-3">
                       <Form.Label>Lokasi</Form.Label>
                       <Form.Control
-                        value={values.lokasi}
-                        name="lokasi"
+                        value={values.location}
+                        name="location"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        isInvalid={!!errors.lokasi}
+                        isInvalid={!!errors.location}
                         type="text"
                         disabled={!isEditing}
                         className={
@@ -194,7 +200,7 @@ export default function Profile() {
                         type="invalid"
                         className="fw-normal fs-6"
                       >
-                        {errors.lokasi && touched.lokasi && errors.lokasi}
+                        {errors.location && touched.location && errors.location}
                       </Form.Control.Feedback>
                     </Form.Group>
 

@@ -1,4 +1,6 @@
-import { apiClient } from "../thirdparties/axios/apiClient";
+import { apiClientPrivate } from "../thirdparties/axios/apiClientPrivate";
+import { store } from "../thirdparties/redux/store";
+import { login } from "../thirdparties/redux/userSlice";
 
 export const putUpdateUserProfile = (
   form,
@@ -7,8 +9,8 @@ export const putUpdateUserProfile = (
   setIsEditing
 ) => {
   setSubmitting(true);
-  apiClient
-    .post(`${import.meta.env.VITE_BE_API_URL}/users/update`, form)
+  apiClientPrivate
+    .put(`${import.meta.env.VITE_BE_API_URL}/users/update`, form)
     .then((response) => {
       const newData = { ...response.data.data };
       delete newData.created_at;
