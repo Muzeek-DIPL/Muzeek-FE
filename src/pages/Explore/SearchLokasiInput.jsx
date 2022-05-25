@@ -1,9 +1,13 @@
 import { Icon } from "@iconify/react";
+import { useState } from "react";
 import { FormControl, InputGroup } from "react-bootstrap";
 
 export default function SearchLokasiInput(props) {
-  const onChange = (e) => {
-    props.onChange({ keyword: e.target.value });
+  const [keyword, setKeyword] = useState(props.keyword);
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      props.onKeyDown({ keyword: e.target.value });
+    }
   };
   return (
     <InputGroup style={{ width: "250px" }}>
@@ -15,9 +19,10 @@ export default function SearchLokasiInput(props) {
       </InputGroup.Text>
       <FormControl
         placeholder="Cari lokasi / nama musisi"
-        value={props.keyword}
+        value={keyword}
         name="keyword"
-        onChange={onChange}
+        onKeyDown={onKeyDown}
+        onChange={(e) => setKeyword(e.target.value)}
       />
     </InputGroup>
   );

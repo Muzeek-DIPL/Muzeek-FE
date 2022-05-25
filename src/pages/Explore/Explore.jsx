@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { getMusicianByFilter } from "../../network/get";
 import CategoryDropdown from "./CategoryDropdown";
 import styles from "./Explore.module.css";
 import MusicianList from "./MusicianList";
@@ -8,32 +9,52 @@ import SearchLokasiInput from "./SearchLokasiInput";
 import SortDropdown from "./SortDropdown";
 
 export default function Explore() {
-  const keyword = useSelector((state) => state.keyword.keyword);
-  const dispatch = useDispatch();
+  let [searchParams, setSearchParams] = useSearchParams();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [allDataCount, setAllDataCount] = useState(0);
+  const [fetchError, setFetchError] = useState("");
   const [filter, setFilter] = useState({
-    date_published: "desc",
-    keyword: keyword,
+    sort_by: "created_at",
+    keyword:
+      searchParams.get("keyword") !== null ? searchParams.get("keyword") : "",
     instrument: [
       "Vokal",
       "Gitar",
       "Bass",
-      "Brass",
+      "Other",
       "Perkusi",
       "Piano",
       "Strings",
     ],
+    page: 1,
   });
+
+  useEffect(() => {
+    getMusicianByFilter(
+      filter,
+      data,
+      setData,
+      setAllDataCount,
+      setIsLoading,
+      setFetchError
+    );
+  }, [filter]);
 
   const handleFilter = (value) => {
     setFilter({ ...filter, ...value });
   };
 
   const onLoadMore = async () => {
-    setIsLoading(true);
-    setIsLoading(false);
+    setFilter({ ...filter, page: filter.page + 1 });
+    getMusicianByFilter(
+      filter,
+      data,
+      setData,
+      setAllDataCount,
+      setIsLoading,
+      setFetchError
+    );
   };
 
   return (
@@ -45,7 +66,7 @@ export default function Explore() {
         className="container mt-4 d-flex flex-column flex-md-row sticky-top bg-white w-100 py-4"
         style={{ zIndex: 1 }}
       >
-        <SearchLokasiInput onChange={handleFilter} keyword={filter.keyword} />
+        <SearchLokasiInput onKeyDown={handleFilter} keyword={filter.keyword} />
         <div className="d-flex flex-row mt-3 mt-md-0">
           <CategoryDropdown onClick={handleFilter} />
           <SortDropdown onClick={handleFilter} />
@@ -57,7 +78,7 @@ export default function Explore() {
             <p className="text-center">Tidak ditemukan hasil yang cocok.</p>
           ) : (
             <>
-              <MusicianList entries={dataFilter?.user} />
+              <MusicianList entries={data} />
               {isLoading ? (
                 ""
               ) : isLoading ? (

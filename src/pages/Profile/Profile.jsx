@@ -217,7 +217,7 @@ export default function Profile() {
                         <option value="Vokal">Vokal</option>
                         <option value="Gitar">Gitar</option>
                         <option value="Bass">Bass</option>
-                        <option value="Brass">Brass</option>
+                        <option value="Other">Other</option>
                         <option value="Perkusi">Perkusi</option>
                         <option value="Piano">Piano</option>
                         <option value="Strings">Strings</option>

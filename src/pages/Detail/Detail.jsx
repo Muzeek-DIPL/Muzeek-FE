@@ -14,8 +14,6 @@ export default function Detail() {
     getMusicianDetail(id, setMusicianDetail, setFetchError);
   }, []);
 
-  console.log(musicianDetail);
-
   return (
     <>
       <div className="container d-flex flex-column flex-md-row justify-content-between py-4">

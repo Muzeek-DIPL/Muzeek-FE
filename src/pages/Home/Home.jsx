@@ -31,7 +31,7 @@ export default function Home() {
       <div className="container my-5">
         <h2 className="fw-bold">Musisi popular</h2>
         <div className="d-flex flex-wrap justify-content-between py-3">
-          {popularMusicians.data?.map((item) => (
+          {popularMusicians.map((item) => (
             <MusicianCardHome
               key={item.id}
               id={item.id}
@@ -45,7 +45,7 @@ export default function Home() {
       <div className="container my-5">
         <h2 className="fw-bold">Musisi terbaru</h2>
         <div className="d-flex flex-wrap justify-content-between py-3">
-          {newestMusicians.data?.map((item) => (
+          {newestMusicians.map((item) => (
             <MusicianCardHome
               key={item.id}
               id={item.id}
