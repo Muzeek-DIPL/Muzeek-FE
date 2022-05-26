@@ -109,7 +109,7 @@ export default function Detail() {
             </div>
           </div>
           <div className="py-5">
-            <CommentList />
+            <CommentList musicianId={id} />
           </div>
         </div>
         <div

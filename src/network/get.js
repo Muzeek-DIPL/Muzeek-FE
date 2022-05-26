@@ -85,3 +85,14 @@ export const getMusicianByFilter = (
       setIsLoadingMore(false);
     });
 };
+
+export const getComments = (id, setData, setFetchError) => {
+  apiClient
+    .get(`${import.meta.env.VITE_BE_API_URL}/comments/${id}`)
+    .then((response) => {
+      setData(response.data.data);
+    })
+    .catch((error) => {
+      setFetchError(error.response.data.meta.message[0]);
+    });
+};
