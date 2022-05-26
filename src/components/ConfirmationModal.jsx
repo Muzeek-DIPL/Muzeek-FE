@@ -1,7 +1,7 @@
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Spinner } from "react-bootstrap";
 
 export default function ConfirmationModal(props) {
-  const { published } = props;
+  const { published, handleUserPublish, isSubmittingPublish } = props;
   let message, btnText;
 
   if (!published) {
@@ -25,6 +25,7 @@ export default function ConfirmationModal(props) {
     <Modal
       show={props.show}
       onHide={props.onHide}
+      backdrop={isSubmittingPublish ? "static" : true}
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -35,14 +36,25 @@ export default function ConfirmationModal(props) {
           <Button
             variant="primary"
             className="rounded py-2 px-3"
-            onClick={onClickConfirm}
+            onClick={handleUserPublish}
+            disabled={isSubmittingPublish}
           >
-            {btnText}
+            {isSubmittingPublish ? (
+              <Spinner
+                variant="light"
+                animation="border"
+                size="sm"
+                aria-hidden="true"
+              />
+            ) : (
+              btnText
+            )}
           </Button>
           <Button
             variant="outline-primary"
             className="rounded py-2 px-3"
             onClick={props.onHide}
+            disabled={isSubmittingPublish}
           >
             Cancel
           </Button>

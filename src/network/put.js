@@ -1,6 +1,6 @@
 import { apiClientPrivate } from "../thirdparties/axios/apiClientPrivate";
 import { store } from "../thirdparties/redux/store";
-import { login } from "../thirdparties/redux/userSlice";
+import { login, togglePublish } from "../thirdparties/redux/userSlice";
 
 export const putUpdateUserProfile = (
   form,
@@ -23,6 +23,26 @@ export const putUpdateUserProfile = (
     .finally(() => {
       setSubmitting(false);
       setIsEditing(false);
+    });
+};
+
+export const putUpdateUserStatus = (
+  setOpenConfirmation,
+  setSubmitting,
+  setFetchError
+) => {
+  setSubmitting(true);
+  apiClientPrivate
+    .put(`${import.meta.env.VITE_BE_API_URL}/users/publish`)
+    .then((response) => {
+      store.dispatch(togglePublish());
+    })
+    .catch((error) => {
+      setFetchError(error.response.data.meta.message[0]);
+    })
+    .finally(() => {
+      setSubmitting(false);
+      setOpenConfirmation(false);
     });
 };
 

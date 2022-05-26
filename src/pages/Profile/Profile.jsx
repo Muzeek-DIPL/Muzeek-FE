@@ -6,7 +6,7 @@ import { Button, Form, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../components/ConfirmationModal";
-import { putUpdateUserProfile } from "../../network/put";
+import { putUpdateUserProfile, putUpdateUserStatus } from "../../network/put";
 import { app } from "../../thirdparties/firebase/firebase";
 import { validateForm } from "../../utils/helpers";
 import styles from "./Profile.module.css";
@@ -16,6 +16,7 @@ export default function Profile() {
 
   const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmittingPublish, setIsSubmittingPublish] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [loadingUpload, setLoadingUpload] = useState(false);
   const [fetchError, setFetchError] = useState("");
@@ -72,6 +73,14 @@ export default function Profile() {
     }
   };
 
+  const handleUserPublish = () => {
+    putUpdateUserStatus(
+      setOpenConfirmation,
+      setIsSubmittingPublish,
+      setFetchError
+    );
+  };
+
   return (
     <div>
       <div className="container py-4 ">
@@ -126,7 +135,12 @@ export default function Profile() {
                         className="d-block m-auto"
                         style={{ width: "360px" }}
                       >
-                        <Spinner />
+                        <Spinner
+                          variant="dark"
+                          animation="border"
+                          size="sm"
+                          aria-hidden="true"
+                        />
                         <p className="text-center" style={{ color: "#f2af02" }}>
                           Uploading image...
                         </p>
@@ -322,7 +336,7 @@ export default function Profile() {
                 variant={user.published ? "primary" : "secondary"}
                 className="rounded py-2 px-3"
                 onClick={() => {
-                  navigate(`/musician/${userId}`);
+                  navigate(`/musician/${user.id}`);
                 }}
                 disabled={!user.published}
               >
@@ -344,6 +358,8 @@ export default function Profile() {
         show={openConfirmation}
         onHide={() => setOpenConfirmation(false)}
         published={user.published}
+        isSubmittingPublish={isSubmittingPublish}
+        handleUserPublish={handleUserPublish}
       />
     </div>
   );
