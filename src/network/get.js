@@ -22,11 +22,20 @@ export const getNewestMusician = (setData, setFetchError) => {
     });
 };
 
-export const getMusicianDetail = (id, setData, setFetchError) => {
+export const getMusicianDetail = (
+  id,
+  userId,
+  setData,
+  setIsMusicianLiked,
+  setFetchError
+) => {
   apiClient
     .get(`${import.meta.env.VITE_BE_API_URL}/musicians/${id}`)
     .then((response) => {
       setData(response.data.data);
+      if (response.data.data.liked_by.includes(userId)) {
+        setIsMusicianLiked(true);
+      }
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);

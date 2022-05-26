@@ -1,18 +1,42 @@
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getMusicianDetail } from "../../network/get";
+import { putUpdateLikes } from "../../network/put";
 import CommentList from "./CommentList";
 import styles from "./Detail.module.css";
 
 export default function Detail() {
+  const userId = useSelector((state) => state.user.id);
   const { id } = useParams();
   const [fetchError, setFetchError] = useState("");
   const [musicianDetail, setMusicianDetail] = useState({});
+  const [isMusicianLiked, setIsMusicianLiked] = useState(false);
+  const [submittingLike, setSubmittingLike] = useState(false);
 
   useEffect(() => {
-    getMusicianDetail(id, setMusicianDetail, setFetchError);
+    getMusicianDetail(
+      id,
+      userId,
+      setMusicianDetail,
+      setIsMusicianLiked,
+      setFetchError
+    );
   }, []);
+  console.log(isMusicianLiked);
+
+  const onLike = () => {
+    putUpdateLikes(
+      id,
+      isMusicianLiked,
+      musicianDetail,
+      setMusicianDetail,
+      setIsMusicianLiked,
+      setSubmittingLike,
+      setFetchError
+    );
+  };
 
   return (
     <>
@@ -28,13 +52,27 @@ export default function Detail() {
               <h2 className="fw-bolder mb-1">{musicianDetail.full_name}</h2>
               <h5>{musicianDetail.instrument}</h5>
               <div className="d-flex my-2">
-                <button className="p-0 border-0 bg-white">
-                  <Icon
-                    icon="ant-design:heart-outlined"
-                    color="#ea2323"
-                    width="24"
-                    height="24"
-                  />
+                <button
+                  className="p-0 border-0 bg-white"
+                  disabled={submittingLike}
+                >
+                  {isMusicianLiked ? (
+                    <Icon
+                      icon="ant-design:heart-filled"
+                      color="#ea2323"
+                      width="24"
+                      height="24"
+                      onClick={onLike}
+                    />
+                  ) : (
+                    <Icon
+                      icon="ant-design:heart-outlined"
+                      color="#ea2323"
+                      width="24"
+                      height="24"
+                      onClick={onLike}
+                    />
+                  )}
                 </button>
                 <p className="ms-1 my-0">{musicianDetail.likes}</p>
               </div>

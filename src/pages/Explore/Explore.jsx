@@ -59,7 +59,7 @@ export default function Explore() {
       setFetchError
     );
   };
-  console.log("isLoading, isLoadingMore", isLoading, isLoadingMore);
+  // console.log("isLoading, isLoadingMore", isLoading, isLoadingMore);
 
   return (
     <div className="pb-3">

@@ -25,3 +25,38 @@ export const putUpdateUserProfile = (
       setIsEditing(false);
     });
 };
+
+export const putUpdateLikes = (
+  id,
+  isMusicianLiked,
+  musicianDetail,
+  setMusicianDetail,
+  setIsMusicianLiked,
+  setSubmittingLike,
+  setFetchError
+) => {
+  setSubmittingLike(true);
+  apiClientPrivate
+    .put(`${import.meta.env.VITE_BE_API_URL}/musicians/${id}/like`)
+    .then((response) => {
+      if (isMusicianLiked) {
+        setIsMusicianLiked(false);
+        setMusicianDetail({
+          ...musicianDetail,
+          likes: response.data.data.likes,
+        });
+      } else {
+        setIsMusicianLiked(true);
+        setMusicianDetail({
+          ...musicianDetail,
+          likes: response.data.data.likes,
+        });
+      }
+    })
+    .catch((error) => {
+      setFetchError(error.response.data.meta.message[0]);
+    })
+    .finally(() => {
+      setSubmittingLike(false);
+    });
+};
