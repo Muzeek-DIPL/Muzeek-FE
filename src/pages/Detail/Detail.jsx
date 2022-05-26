@@ -8,7 +8,7 @@ import CommentList from "./CommentList";
 import styles from "./Detail.module.css";
 
 export default function Detail() {
-  const userId = useSelector((state) => state.user.id);
+  const user = useSelector((state) => state.user);
   const { id } = useParams();
   const [fetchError, setFetchError] = useState("");
   const [musicianDetail, setMusicianDetail] = useState({});
@@ -18,13 +18,12 @@ export default function Detail() {
   useEffect(() => {
     getMusicianDetail(
       id,
-      userId,
+      user.id,
       setMusicianDetail,
       setIsMusicianLiked,
       setFetchError
     );
   }, []);
-  console.log(isMusicianLiked);
 
   const onLike = () => {
     putUpdateLikes(
@@ -109,7 +108,7 @@ export default function Detail() {
             </div>
           </div>
           <div className="py-5">
-            <CommentList musicianId={id} />
+            <CommentList musicianId={id} user={user} />
           </div>
         </div>
         <div
