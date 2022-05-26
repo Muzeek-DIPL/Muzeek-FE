@@ -46,7 +46,10 @@ export default function Navbar() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div className="navbar-nav ms-auto">
+            <div
+              className="navbar-nav ms-auto"
+              style={{ alignItems: "center" }}
+            >
               <Link className="nav-link mx-2" to="/explore" replace>
                 Explore
               </Link>
