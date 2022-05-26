@@ -3,6 +3,7 @@ import CommentInput from "./CommentInput";
 import { useEffect, useState } from "react";
 import { getComments } from "../../network/get";
 import { postComment } from "../../network/post";
+import { deleteComment } from "../../network/delete";
 
 export default function CommentList({ musicianId, user }) {
   const [fetchError, setFetchError] = useState("");
@@ -13,7 +14,6 @@ export default function CommentList({ musicianId, user }) {
   }, []);
 
   const handleCommentPost = (comment) => {
-    console.log(user);
     postComment(
       musicianId,
       user,
@@ -23,6 +23,10 @@ export default function CommentList({ musicianId, user }) {
       setSubmitting,
       setFetchError
     );
+  };
+
+  const handleDeleteComment = (commentId) => {
+    deleteComment(commentId, comments, setComments, setFetchError);
   };
 
   return (
@@ -40,6 +44,7 @@ export default function CommentList({ musicianId, user }) {
           img={item.commenters.img_link}
           comment={item.text}
           dateCommented={item.created_at}
+          handleDeleteComment={handleDeleteComment}
         />
       ))}
     </>

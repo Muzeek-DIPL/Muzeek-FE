@@ -62,13 +62,6 @@ export const postComment = (
           commenters: { full_name: user.full_name, img_link: user.img_link },
         },
       ]);
-      console.log([
-        ...comments,
-        {
-          ...response.data.data,
-          commenters: { full_name: user.full_name, img_link: user.img_link },
-        },
-      ]);
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);

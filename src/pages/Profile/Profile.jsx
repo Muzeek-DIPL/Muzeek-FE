@@ -37,7 +37,6 @@ export default function Profile() {
           getDownloadURL(fileRef)
             .then((url) => {
               setFieldValue("img_link", url);
-              console.log("e", e);
             })
             .then(() => {
               setLoadingUpload(false);
@@ -95,7 +94,6 @@ export default function Profile() {
               }}
               validate={(values) => {
                 const exceptionFields = ["img_link", "instrument", "about"];
-                console.log(validateForm(values, exceptionFields));
                 return validateForm(values, exceptionFields);
               }}
               onSubmit={(values, { setSubmitting }) => {
