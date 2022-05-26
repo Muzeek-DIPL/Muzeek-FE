@@ -4,7 +4,6 @@ import MusicianCardExplore from "./MusicianCardExplore";
 export default function MusicianList(props) {
   const { entries } = props;
   const [likedMusician, setLikedMusician] = useState([]);
-  console.log("entries", entries);
   return (
     <div className="d-flex flex-wrap py-3">
       {entries.map((item) => (

@@ -5,7 +5,6 @@ export const getPopularMusician = (setData, setFetchError) => {
     .get(`${import.meta.env.VITE_BE_API_URL}/musicians?sort_by=likes`)
     .then((response) => {
       setData(response.data.data.data.slice(0, 4));
-      console.log(response.data.data);
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);
@@ -40,9 +39,9 @@ export const getMusicianByFilter = (
   setData,
   setAllDataCount,
   setIsLoading,
+  setIsLoadingMore,
   setFetchError
 ) => {
-  setIsLoading(true);
   let { keyword, instrument, sort_by, page } = filter;
   instrument = instrument.join();
   // console.log(
@@ -61,13 +60,19 @@ export const getMusicianByFilter = (
     })
     .then((response) => {
       setAllDataCount(response.data.data.total);
-      setData([...data, ...response.data.data.data]);
+      if (page > 1) {
+        setIsLoadingMore(true);
+        setData([...data, ...response.data.data.data]);
+      } else {
+        setIsLoading(true);
+        setData(response.data.data.data);
+      }
     })
     .catch((error) => {
-      console.log(error);
       setFetchError(error.response.data.meta.message[0]);
     })
     .finally(() => {
       setIsLoading(false);
+      setIsLoadingMore(false);
     });
 };

@@ -12,6 +12,7 @@ export default function Explore() {
   let [searchParams, setSearchParams] = useSearchParams();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [allDataCount, setAllDataCount] = useState(0);
   const [fetchError, setFetchError] = useState("");
   const [filter, setFilter] = useState({
@@ -37,15 +38,16 @@ export default function Explore() {
       setData,
       setAllDataCount,
       setIsLoading,
+      setIsLoadingMore,
       setFetchError
     );
   }, [filter]);
 
   const handleFilter = (value) => {
-    setFilter({ ...filter, ...value });
+    setFilter({ ...filter, page: 1, ...value });
   };
 
-  const onLoadMore = async () => {
+  const onLoadMore = () => {
     setFilter({ ...filter, page: filter.page + 1 });
     getMusicianByFilter(
       filter,
@@ -53,9 +55,11 @@ export default function Explore() {
       setData,
       setAllDataCount,
       setIsLoading,
+      setIsLoadingMore,
       setFetchError
     );
   };
+  console.log("isLoading, isLoadingMore", isLoading, isLoadingMore);
 
   return (
     <div className="pb-3">
@@ -81,8 +85,13 @@ export default function Explore() {
               <MusicianList entries={data} />
               {isLoading ? (
                 ""
-              ) : isLoading ? (
-                <Spinner />
+              ) : isLoadingMore ? (
+                <Spinner
+                  variant="dark"
+                  animation="border"
+                  size="sm"
+                  aria-hidden="true"
+                />
               ) : data.length === allDataCount ? (
                 <p className="text-center">Semua data telah ditampilkan.</p>
               ) : (
@@ -91,13 +100,27 @@ export default function Explore() {
                   style={{ cursor: "pointer" }}
                   onClick={onLoadMore}
                 >
-                  Lihat lainnya
+                  {isLoadingMore ? (
+                    <Spinner
+                      variant="dark"
+                      animation="border"
+                      size="sm"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    "Lihat lainnya"
+                  )}
                 </button>
               )}
             </>
           )
         ) : (
-          <Spinner />
+          <Spinner
+            variant="dark"
+            animation="border"
+            size="sm"
+            aria-hidden="true"
+          />
         )}
       </div>
     </div>
