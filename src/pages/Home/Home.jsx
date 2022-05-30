@@ -48,7 +48,7 @@ export default function Home() {
           {newestMusicians.map((item) => (
             <MusicianCardHome
               key={item.id}
-              id={item.id}
+              id={item.user_id}
               profile={item.img_link}
               fullName={item.full_name}
               instrument={item.instrument}

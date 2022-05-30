@@ -9,7 +9,7 @@ export default function MusicianList(props) {
       {entries.map((item) => (
         <MusicianCardExplore
           key={item.id}
-          id={item.id}
+          id={item.user_id}
           profile={item.img_link}
           fullName={item.full_name}
           instrument={item.instrument}
