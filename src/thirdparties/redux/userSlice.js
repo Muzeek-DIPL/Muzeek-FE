@@ -13,6 +13,7 @@ export const userSlice = createSlice({
     location: "",
     img_link: "",
     published: false,
+    instrument: "",
   },
   reducers: {
     login: (state, action) => {
@@ -26,6 +27,7 @@ export const userSlice = createSlice({
       state.location = action.payload.location;
       state.img_link = action.payload.img_link;
       state.published = action.payload.published;
+      state.instrument = action.payload.instrument;
     },
     logout: (state) => {
       state.id = 0;
@@ -38,6 +40,7 @@ export const userSlice = createSlice({
       state.location = "";
       state.img_link = "";
       state.published = false;
+      state.instrument = "";
     },
     togglePublish: (state) => {
       state.published = !state.published;

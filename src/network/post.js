@@ -6,8 +6,29 @@ export const postLogin = (form, setSubmitting, setFetchError) => {
   setSubmitting(true);
   apiClient
     .post(`${import.meta.env.VITE_BE_API_URL}/login`, form)
-    .then((response) => {
-      handleLogin(response.data.data);
+    .then((responseLogin) => {
+      if (responseLogin.data.data.user.published) {
+        apiClient
+          .get(
+            `${import.meta.env.VITE_BE_API_URL}/musicians/${
+              responseLogin.data.data.user.id
+            }`
+          )
+          .then((responseMusician) => {
+            handleLogin({
+              ...responseLogin.data.data,
+              user: {
+                ...responseLogin.data.data.user,
+                instrument: responseMusician.data.data.instrument,
+              },
+            });
+          })
+          .catch((error) => {
+            setFetchError(error.response.data.meta.message[0]);
+          });
+      } else {
+        handleLogin(responseLogin.data.data);
+      }
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);
