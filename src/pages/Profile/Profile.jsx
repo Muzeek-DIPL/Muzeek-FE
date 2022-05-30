@@ -1,7 +1,7 @@
 import imageCompression from "browser-image-compression";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Form, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,7 @@ export default function Profile() {
   const [loadingUpload, setLoadingUpload] = useState(false);
   const [fetchError, setFetchError] = useState("");
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [instrumentValue, setInstrumentValue] = useState(user.instrument);
 
   const compressionOption = {
     maxWidthOrHeight: 528,
@@ -107,6 +108,7 @@ export default function Profile() {
               }}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("masuk submit");
+                values = { ...values, instrument: instrumentValue };
                 putUpdateUserProfile(
                   values,
                   setSubmitting,
@@ -219,6 +221,8 @@ export default function Profile() {
                     <Form.Group className="fw-bolder fs-5 mb-3">
                       <Form.Label>Instrumen</Form.Label>
                       <Form.Select
+                        value={instrumentValue}
+                        onChange={(e) => setInstrumentValue(e.target.value)}
                         disabled={!isEditing}
                         className={
                           styles.input +

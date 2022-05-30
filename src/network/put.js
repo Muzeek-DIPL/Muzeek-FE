@@ -11,11 +11,24 @@ export const putUpdateUserProfile = (
   setSubmitting(true);
   apiClientPrivate
     .put(`${import.meta.env.VITE_BE_API_URL}/users/update`, form)
-    .then((response) => {
-      const newData = { ...response.data.data };
-      delete newData.created_at;
-      delete newData.updated_at;
-      store.dispatch(login(newData));
+    .then((responseUpdateUser) => {
+      apiClientPrivate
+        .put(`${import.meta.env.VITE_BE_API_URL}/users/update_instrument`, {
+          instrument: form.instrument,
+        })
+        .then((responseUpdateInstrument) => {
+          const newData = {
+            ...responseUpdateUser.data.data,
+            instrument: form.instrument,
+          };
+          console.log(newData);
+          delete newData.created_at;
+          delete newData.updated_at;
+          store.dispatch(login(newData));
+        })
+        .catch((error) => {
+          setFetchError(error.response.data.meta.message[0]);
+        });
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);
