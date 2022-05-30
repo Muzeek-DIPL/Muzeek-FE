@@ -10,8 +10,10 @@ export default function CommentList({ musicianId, user }) {
   const [comments, setComments] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   useEffect(() => {
-    getComments(musicianId, setComments, setFetchError);
-  }, []);
+    if (musicianId !== undefined) {
+      getComments(musicianId, setComments, setFetchError);
+    }
+  }, [musicianId]);
 
   const handleCommentPost = (comment) => {
     postComment(

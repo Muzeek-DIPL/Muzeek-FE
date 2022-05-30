@@ -27,7 +27,7 @@ export default function Detail() {
 
   const onLike = () => {
     putUpdateLikes(
-      id,
+      musicianDetail.id,
       isMusicianLiked,
       musicianDetail,
       setMusicianDetail,
@@ -108,7 +108,7 @@ export default function Detail() {
             </div>
           </div>
           <div className="py-5">
-            <CommentList musicianId={id} user={user} />
+            <CommentList musicianId={musicianDetail.id} user={user} />
           </div>
         </div>
         <div

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import MusicianCardExplore from "./MusicianCardExplore";
 
 export default function MusicianList(props) {
   const { entries } = props;
-  const [likedMusician, setLikedMusician] = useState([]);
+  const userId = useSelector((state) => state.user.id);
   return (
     <div className="d-flex flex-wrap py-3">
       {entries.map((item) => (
@@ -15,7 +16,7 @@ export default function MusicianList(props) {
           instrument={item.instrument}
           location={item.location}
           likes={item.likes}
-          userLikedMusician={likedMusician}
+          userLikedMusician={item.liked_by.includes(userId)}
         />
       ))}
     </div>
