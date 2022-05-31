@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getComments } from "../../network/get";
 import { postComment } from "../../network/post";
 import { deleteComment } from "../../network/delete";
+import { isLoggedIn } from "../../utils/helpers";
 
 export default function CommentList({ musicianId, user }) {
   const [fetchError, setFetchError] = useState("");
@@ -34,10 +35,12 @@ export default function CommentList({ musicianId, user }) {
   return (
     <>
       <h5 className="fw-bolder">Komentar ({comments.length})</h5>
-      <CommentInput
-        handleCommentPost={handleCommentPost}
-        isSubmitting={submitting}
-      />
+      {isLoggedIn() && (
+        <CommentInput
+          handleCommentPost={handleCommentPost}
+          isSubmitting={submitting}
+        />
+      )}
       {comments.map((item) => (
         <Comment
           key={item.id}
