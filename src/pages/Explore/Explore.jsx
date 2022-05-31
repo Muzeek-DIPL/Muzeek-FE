@@ -48,16 +48,19 @@ export default function Explore() {
   };
 
   const onLoadMore = () => {
-    setFilter({ ...filter, page: filter.page + 1 });
-    getMusicianByFilter(
-      filter,
-      data,
-      setData,
-      setAllDataCount,
-      setIsLoading,
-      setIsLoadingMore,
-      setFetchError
-    );
+    setFilter((prev) => {
+      const newFilter = { ...prev, page: prev.page + 1 };
+      getMusicianByFilter(
+        newFilter,
+        data,
+        setData,
+        setAllDataCount,
+        setIsLoading,
+        setIsLoadingMore,
+        setFetchError
+      );
+      return newFilter;
+    });
   };
 
   return (
