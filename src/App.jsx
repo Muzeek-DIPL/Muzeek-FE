@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
+import ChatWindow from "./components/ChatWindow";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Detail from "./pages/Detail/Detail";
@@ -28,6 +29,7 @@ function App() {
                   element={<NotFound code={404} message={"Not Found"} />}
                 />
               </Routes>
+              <ChatWindow />
             </BrowserRouter>
           </PersistGate>
         </Provider>
