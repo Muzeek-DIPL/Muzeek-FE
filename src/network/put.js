@@ -3,6 +3,7 @@ import { store } from "../thirdparties/redux/store";
 import { login, togglePublish } from "../thirdparties/redux/userSlice";
 
 export const putUpdateUserProfile = (
+  isUserPublished,
   form,
   setSubmitting,
   setFetchError,
@@ -12,23 +13,32 @@ export const putUpdateUserProfile = (
   apiClientPrivate
     .put(`${import.meta.env.VITE_BE_API_URL}/users/update`, form)
     .then((responseUpdateUser) => {
-      apiClientPrivate
-        .put(`${import.meta.env.VITE_BE_API_URL}/users/update_instrument`, {
-          instrument: form.instrument,
-        })
-        .then((responseUpdateInstrument) => {
-          const newData = {
-            ...responseUpdateUser.data.data,
+      if (isUserPublished) {
+        apiClientPrivate
+          .put(`${import.meta.env.VITE_BE_API_URL}/users/update_instrument`, {
             instrument: form.instrument,
-          };
-          console.log(newData);
-          delete newData.created_at;
-          delete newData.updated_at;
-          store.dispatch(login(newData));
-        })
-        .catch((error) => {
-          setFetchError(error.response.data.meta.message[0]);
-        });
+          })
+          .then((responseUpdateInstrument) => {
+            const newData = {
+              ...responseUpdateUser.data.data,
+              instrument: form.instrument,
+              published: true,
+            };
+            console.log(newData);
+            delete newData.created_at;
+            delete newData.updated_at;
+            store.dispatch(login(newData));
+          })
+          .catch((error) => {
+            setFetchError(error.response.data.meta.message[0]);
+          });
+      } else {
+        const newData = responseUpdateUser.data.data;
+        console.log(newData);
+        delete newData.created_at;
+        delete newData.updated_at;
+        store.dispatch(login(newData));
+      }
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);

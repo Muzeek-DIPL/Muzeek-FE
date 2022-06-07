@@ -110,6 +110,7 @@ export default function Profile() {
                 console.log("masuk submit");
                 values = { ...values, instrument: instrumentValue };
                 putUpdateUserProfile(
+                  user.published,
                   values,
                   setSubmitting,
                   setFetchError,
@@ -223,7 +224,7 @@ export default function Profile() {
                       <Form.Select
                         value={instrumentValue}
                         onChange={(e) => setInstrumentValue(e.target.value)}
-                        disabled={!isEditing}
+                        disabled={!isEditing || !user.published}
                         className={
                           styles.input +
                           " rounded-0 border-top-0 border-end-0 border-start-0 shadow-none"
