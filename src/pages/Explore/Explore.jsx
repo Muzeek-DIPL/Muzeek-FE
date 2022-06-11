@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useSearchParams } from "react-router-dom";
 import { getMusicianByFilter } from "../../network/get";
 import CategoryDropdown from "./CategoryDropdown";
 import styles from "./Explore.module.css";
+import cardStyles from "./MusicianCardExplore.module.css";
 import MusicianList from "./MusicianList";
 import SearchLokasiInput from "./SearchLokasiInput";
 import SortDropdown from "./SortDropdown";
@@ -63,6 +66,50 @@ export default function Explore() {
     });
   };
 
+  const renderSkeleton = () => {
+    const skeletons = [];
+    for (let i = 0; i < 4; i++) {
+      skeletons.push(
+        <div
+          className={`${cardStyles.musician} p-0 mb-4 me-md-3 me-lg-4 d-flex flex-column rounded shadow`}
+        >
+          <Skeleton
+            className={`${cardStyles.profile} rounded-top`}
+            height={240}
+          />
+          <div className="d-flex flex-column justify-content-between p-4 rounded-bottom">
+            <div className="d-flex justify-content-between bg-white w-100">
+              <div className="d-block w-75">
+                <h5 className="mb-1 text-truncate">
+                  <Skeleton />
+                </h5>
+                <h6 className="fw-normal text-truncate">
+                  <Skeleton />
+                </h6>
+                <h6
+                  className="fw-normal text-truncate"
+                  style={{ color: "#8F8D8D" }}
+                >
+                  <Skeleton />
+                </h6>
+              </div>
+              <div className=" text-center">
+                <Skeleton width={31} height={31} />
+                <p>
+                  <Skeleton />
+                </p>
+              </div>
+            </div>
+            <p className="nav-link text-black p-0">
+              <Skeleton width={100} />
+            </p>
+          </div>
+        </div>
+      );
+    }
+    return skeletons;
+  };
+
   return (
     <div className="pb-3">
       <div className="container mt-4">
@@ -85,9 +132,7 @@ export default function Explore() {
           ) : (
             <>
               <MusicianList entries={data} />
-              {isLoading ? (
-                ""
-              ) : isLoadingMore ? (
+              {isLoadingMore ? (
                 <Spinner
                   variant="dark"
                   animation="border"
@@ -117,12 +162,9 @@ export default function Explore() {
             </>
           )
         ) : (
-          <Spinner
-            variant="dark"
-            animation="border"
-            size="sm"
-            aria-hidden="true"
-          />
+          <div className="d-flex flex-wrap py-3">
+            <>{renderSkeleton()}</>
+          </div>
         )}
       </div>
     </div>

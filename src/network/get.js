@@ -1,6 +1,6 @@
 import { apiClient } from "../thirdparties/axios/apiClient";
 
-export const getPopularMusician = (setData, setFetchError) => {
+export const getPopularMusician = (setData, setFetchError, setIsLoading) => {
   apiClient
     .get(`${import.meta.env.VITE_BE_API_URL}/musicians?sort_by=likes`)
     .then((response) => {
@@ -8,10 +8,10 @@ export const getPopularMusician = (setData, setFetchError) => {
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);
-    });
+    }).finally(()=>setIsLoading(false));
 };
 
-export const getNewestMusician = (setData, setFetchError) => {
+export const getNewestMusician = (setData, setFetchError, setIsLoading) => {
   apiClient
     .get(`${import.meta.env.VITE_BE_API_URL}/musicians?sort_by=created_at`)
     .then((response) => {
@@ -19,7 +19,7 @@ export const getNewestMusician = (setData, setFetchError) => {
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);
-    });
+    }).finally(()=>setIsLoading(false));
 };
 
 export const getMusicianDetail = (
@@ -27,7 +27,8 @@ export const getMusicianDetail = (
   userId,
   setData,
   setIsMusicianLiked,
-  setFetchError
+  setFetchError,
+  setIsLoading
 ) => {
   apiClient
     .get(`${import.meta.env.VITE_BE_API_URL}/musicians/${id}`)
@@ -39,7 +40,7 @@ export const getMusicianDetail = (
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);
-    });
+    }).finally(()=>setIsLoading(false));
 };
 
 export const getMusicianByFilter = (
@@ -49,15 +50,10 @@ export const getMusicianByFilter = (
   setAllDataCount,
   setIsLoading,
   setIsLoadingMore,
-  setFetchError
+  setFetchError,
 ) => {
   let { keyword, instrument, sort_by, page } = filter;
   instrument = instrument.join();
-  // console.log(
-  //   `${
-  //     import.meta.env.VITE_BE_API_URL
-  //   }/musicians?keyword=${keyword}&sort_by=${sort_by}&instrument=${instrument}&page=${page}`
-  // );
   apiClient
     .get(`${import.meta.env.VITE_BE_API_URL}/musicians`, {
       params: {
@@ -86,7 +82,7 @@ export const getMusicianByFilter = (
     });
 };
 
-export const getComments = (id, setData, setFetchError) => {
+export const getComments = (id, setData, setFetchError, setIsLoading) => {
   apiClient
     .get(`${import.meta.env.VITE_BE_API_URL}/comments/${id}`)
     .then((response) => {
@@ -94,5 +90,5 @@ export const getComments = (id, setData, setFetchError) => {
     })
     .catch((error) => {
       setFetchError(error.response.data.meta.message[0]);
-    });
+    }).finally(()=>setIsLoading(false));
 };

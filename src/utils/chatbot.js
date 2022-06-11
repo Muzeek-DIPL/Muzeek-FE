@@ -2,6 +2,7 @@ const utterances = [
   ["hi", "hey", "hei", "hello", "hallo", "hai", "halo", "helo"], //0
   ["fungsi web", "web apa", "apa web"], //1
   ["kamu siapa", "siapa kamu", "siapa anda", "siapa namamu"], //2
+  ["bagaimana cara jadi musisi", "bagaimana cara publish profile", "bagaimana cara memasukkan profile ke list search"]
 ];
 
 const answers = [
@@ -13,6 +14,9 @@ const answers = [
     "Aku adalah MuzeekBot, bot yang siap membantu kamu untuk menjawab pertanyaan terkait Muzeek!",
     "Perkenalkan, namaku MuzeekBot, bot yang siap membantu kamu untuk menjawab pertanyaan terkait Muzeek!",
   ], //2
+  [
+    "Buat akun baru pada Muzeek -> Masuk ke halaman Profile dengan mengklik foto profile-mu -> Klik tombol 'Publish Profile'. Setelah itu profil musisi kamu akan terpampang pada halaman explore!"
+  ]
 ];
 
 const alternatives = ["Maaf saya tidak mengerti...", "Coba tanya hal lain"];

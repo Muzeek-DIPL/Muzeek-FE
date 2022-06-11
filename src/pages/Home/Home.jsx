@@ -1,19 +1,37 @@
 import { useEffect, useState } from "react";
-import mockData from "../../mockMusician.json";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { getNewestMusician, getPopularMusician } from "../../network/get";
+import cardStyles from ".//MusicianCardHome.module.css";
 import styles from "./Home.module.css";
 import MusicianCardHome from "./MusicianCardHome";
 import SearchInputHome from "./SearchInputHome";
-import { getPopularMusician, getNewestMusician } from "../../network/get";
 
 export default function Home() {
   const [fetchError, setFetchError] = useState("");
   const [popularMusicians, setPopularMusicians] = useState([]);
   const [newestMusicians, setNewestMusicians] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getPopularMusician(setPopularMusicians, setFetchError);
-    getNewestMusician(setNewestMusicians, setFetchError);
+    getPopularMusician(setPopularMusicians, setFetchError, setIsLoading);
+    getNewestMusician(setNewestMusicians, setFetchError, setIsLoading);
   }, []);
+
+  const renderSkeleton = () => {
+    const skeletons = [];
+    for (let i = 0; i < 4; i++) {
+      skeletons.push(
+        <div
+          key={i}
+          className={`${cardStyles.container} mb-3 mb-md-0 d-inline-block border-0 card rounded`}
+        >
+          <Skeleton style={{ height: "100%" }} />
+        </div>
+      );
+    }
+    return skeletons;
+  };
 
   return (
     <div className="pb-3">
@@ -31,29 +49,37 @@ export default function Home() {
       <div className="container my-5">
         <h2 className="fw-bold">Musisi popular</h2>
         <div className="d-flex flex-wrap justify-content-between py-3">
-          {popularMusicians.map((item) => (
-            <MusicianCardHome
-              key={item.id}
-              id={item.user_id}
-              profile={item.img_link}
-              fullName={item.full_name}
-              instrument={item.instrument}
-            />
-          ))}
+          {isLoading ? (
+            <>{renderSkeleton()}</>
+          ) : (
+            popularMusicians.map((item) => (
+              <MusicianCardHome
+                key={item.id}
+                id={item.user_id}
+                profile={item.img_link}
+                fullName={item.full_name}
+                instrument={item.instrument}
+              />
+            ))
+          )}
         </div>
       </div>
       <div className="container my-5">
         <h2 className="fw-bold">Musisi terbaru</h2>
         <div className="d-flex flex-wrap justify-content-between py-3">
-          {newestMusicians.map((item) => (
-            <MusicianCardHome
-              key={item.id}
-              id={item.user_id}
-              profile={item.img_link}
-              fullName={item.full_name}
-              instrument={item.instrument}
-            />
-          ))}
+          {isLoading ? (
+            <>{renderSkeleton()}</>
+          ) : (
+            newestMusicians.map((item) => (
+              <MusicianCardHome
+                key={item.id}
+                id={item.user_id}
+                profile={item.img_link}
+                fullName={item.full_name}
+                instrument={item.instrument}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
