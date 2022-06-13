@@ -5,7 +5,7 @@ import { login, logout } from "../thirdparties/redux/userSlice";
 export function handleLogout() {
   const cookies = new Cookies();
   store.dispatch(logout());
-  cookies.remove("token", { path: "/", domain: window.location.hostname });
+  cookies.remove("token", { path: "/" });
   window.location.href = "/";
 }
 
