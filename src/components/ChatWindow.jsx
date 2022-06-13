@@ -65,7 +65,12 @@ export default function ChatWindow() {
   return (
     <div
       className="position-fixed"
-      style={isOpen ? { bottom: 30, right: 30 } : { bottom: 100, right: 30 }}
+      style={{
+        right: 30,
+        zIndex: 10,
+
+        ...(isOpen ? { bottom: 30 } : { bottom: 100 }),
+      }}
     >
       {!isOpen ? (
         <Button
@@ -93,7 +98,11 @@ export default function ChatWindow() {
           </div>
           <div
             className="d-flex flex-column gap-4 bg-white py-3 px-2 overflow-auto"
-            style={{ height: "300px", width: "320px" }}
+            style={{
+              height: "300px",
+              width: "320px",
+              scrollBehavior: "smooth",
+            }}
           >
             {messages.map((v, i) => (
               <ChatBubble key={i} message={v.message} sender={v.sender} />

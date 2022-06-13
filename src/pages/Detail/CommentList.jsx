@@ -42,6 +42,9 @@ export default function CommentList({ musicianId, user }) {
       <h5 className="fw-bolder">
         Komentar {comments.length !== 0 ? `(${comments.length})` : ""}
       </h5>
+      {comments.length === 0 && !isLoading && (
+        <p className="text-secondary">Belum ada komentar...</p>
+      )}
       {isLoggedIn() && (
         <CommentInput
           handleCommentPost={handleCommentPost}

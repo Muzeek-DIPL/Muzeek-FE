@@ -1,12 +1,12 @@
 const utterances = [
   ["hi", "hey", "hei", "hello", "hallo", "hai", "halo", "helo"], //0
-  ["fungsi web", "web apa", "apa web"], //1
+  ["fungsi web", "web apa", "apa web", "fungsi aplikasi", "apa aplikasi", "aplikasi apa"], //1
   ["kamu siapa", "siapa kamu", "siapa anda", "siapa namamu"], //2
-  ["bagaimana cara jadi musisi", "bagaimana cara publish profile", "bagaimana cara memasukkan profile ke list search"]
+  ["jadi musisi", "publish profile", "profile ke list search"]
 ];
 
 const answers = [
-  ["Halo! ada yang aku bantu?", "Hai! perlu bantuan?"], //0
+  ["Halo! ada yang bisa aku bantu?", "Hai! perlu bantuan?"], //0
   [
     "Muzeek merupakan sebuah aplikasi berbasis web yang dibuat untuk membantu pengguna dalam mencari informasi mengenai musisi-musisi yang telah terdaftar pada website ini.",
   ], //1
@@ -19,14 +19,15 @@ const answers = [
   ]
 ];
 
-const alternatives = ["Maaf saya tidak mengerti...", "Coba tanya hal lain"];
+const alternatives = ["Maaf aku belum mengerti...", "Coba tanya hal lain"];
 
 function compare(utterancesArray, answersArray, string) {
-  const regex = new RegExp("^.*?" + string + "*?", "g");
+  // const regex = new RegExp("^.*?" + string + "*?", "g");
   let answer;
   for (let i = 0; i < utterancesArray.length; i++) {
     for (let j = 0; j < utterancesArray[i].length; j++) {
-      if (utterancesArray[i][j].match(regex)) {
+      const regex = new RegExp("^.*?" + utterancesArray[i][j] + "*?", "g");
+      if (string.match(regex)) {
         let answers = answersArray[i];
         answer = answers[Math.floor(Math.random() * answers.length)];
       }
