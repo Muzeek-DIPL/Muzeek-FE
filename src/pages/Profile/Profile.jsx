@@ -302,6 +302,12 @@ export default function Profile() {
                           " rounded-0 border-top-0 border-end-0 border-start-0 shadow-none"
                         }
                       />
+                      <Form.Control.Feedback
+                        type="invalid"
+                        className="fw-normal fs-6"
+                      >
+                        {errors.about && touched.about && errors.about}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     {!isEditing ? (
