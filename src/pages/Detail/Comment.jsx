@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import { isLoggedIn } from "../../utils/helpers";
 
 export default function Comment(props) {
   const { id, commenter, img, comment, dateCommented, handleDeleteComment } =
@@ -34,15 +35,22 @@ export default function Comment(props) {
         <p>{comment}</p>
         <p style={{ color: "#8F8D8D" }}>{convertedDate}</p>
       </div>
-      <Icon
-        icon="bi:trash-fill"
-        color="#c4c4c4"
-        width="18"
-        height="18"
-        className="align-self-end mb-3"
-        style={{ cursor: "pointer" }}
-        onClick={() => handleDeleteComment(id)}
-      />
+      {isLoggedIn() && (
+        <Icon
+          icon="bi:trash-fill"
+          color="#c4c4c4"
+          width="18"
+          height="18"
+          className="align-self-end mb-3"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            if (!isLoggedIn()) {
+              return;
+            }
+            handleDeleteComment(id);
+          }}
+        />
+      )}
     </div>
   );
 }
