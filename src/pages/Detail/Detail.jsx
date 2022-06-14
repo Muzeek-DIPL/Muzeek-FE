@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getMusicianDetail } from "../../network/get";
 import { putUpdateLikes } from "../../network/put";
+import { isLoggedIn } from "../../utils/helpers";
 import CommentList from "./CommentList";
 import styles from "./Detail.module.css";
 
@@ -30,6 +31,10 @@ export default function Detail() {
   }, []);
 
   const onLike = () => {
+    if (!isLoggedIn()) {
+      return;
+    }
+
     putUpdateLikes(
       musicianDetail.id,
       isMusicianLiked,
@@ -73,7 +78,7 @@ export default function Detail() {
               <div className="d-flex my-2">
                 <button
                   className="p-0 border-0 bg-white"
-                  disabled={submittingLike}
+                  disabled={!isLoggedIn() || submittingLike}
                 >
                   {isMusicianLiked ? (
                     <Icon
