@@ -103,11 +103,10 @@ export default function Profile() {
                 about: user.about,
               }}
               validate={(values) => {
-                const exceptionFields = ["img_link", "instrument", "about"];
+                const exceptionFields = ["img_link", "instrument"];
                 return validateForm(values, exceptionFields);
               }}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("masuk submit");
                 values = { ...values, instrument: instrumentValue };
                 putUpdateUserProfile(
                   user.published,
@@ -296,6 +295,7 @@ export default function Profile() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         type="text"
+                        isInvalid={!!errors.about}
                         disabled={!isEditing}
                         className={
                           styles.input +
